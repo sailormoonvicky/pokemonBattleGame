@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Battle Game</title>
+  <link rel="stylesheet" href="assets/index.css">
+  <link rel="icon" type="image/png" href="https://slackmojis.com/emojis/186-pokeball/download">
+</head>
+<body>
+  <header>
+    <h1>Pokémon Battle Game</h1>
+    <img src="assets/all_stars.webp"
+    alt="All star Pokemon" class="battle">
+  </header>
+
+  <main>
+    <!-- Display Player's Pokemon -->
+    <section id="poke-info">
+      <div id="player-info">
+        <h2>Player's Pokemon</h3>
+        <div id="player-section">
+          <h3>Select Your Pokemon</h2>
+          <select id="player-pokemon">
+
+          </select>
+          <button id="select-pokemon">Choose Pokemon</button>
+        </div>
+      </div>
+      <div id="cpu-info">
+        <h2>CPU's Pokemon</h3>
+        <img src="assets/question_mark.png" alt="Pokemon with question mark" width="484" height="413">
+      </div>
+    </section>
+
+    <section id="battle-info">
+      <h2>Battle Results</h2>
+      <div id="battle-log">
+
+      </div>
+      <button id="start-battle">Start Battle</button>
+    </section>
+
+
+  </main>
+
+  <footer>
+    <div>
+      <p>Made with ♥ for Pokemon fans</p>
+    </div>
+    <div>
+      <p class="copyright"><i class="fa-regular fa-copyright"></i>SailorMoonVicky_2023</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
