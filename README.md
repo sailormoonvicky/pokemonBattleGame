@@ -3,8 +3,8 @@
 
 ## Project Description
 The Pokémon Battle Game is an interactive web application designed to simulate Pokémon battles. Users can select their Pokémon from a dropdown menu, which then displays the selected Pokémon's information. Once the user is ready, they can initiate a battle against a computer-controlled opponent. The game includes a battle log that details each round of the fight until a winner is determined.
-(assets/Screenshot .png)
-[Visit the web application] (https://sailormoonvicky.github.io/pokemonBattleGame/)
+![screenshot](assets/Screenshot .png)
+[Visit the web application](https://sailormoonvicky.github.io/pokemonBattleGame/)
 
 ## Features
 - **Pokémon Selection**: Users can choose their Pokémon from a dynamically populated dropdown menu and a button.
