@@ -86,6 +86,13 @@ footer p {
   max-height: 200px;
   overflow-y: auto;
 }
+/* 
+.reset {
+  margin: 2rem;
+  position: relative;
+  top: 50%;
+  left: 50%;
+} */
 
 .instructions {
   background-color: #ececec;

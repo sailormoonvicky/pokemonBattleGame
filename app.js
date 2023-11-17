@@ -1,6 +1,7 @@
 let selectedPokemonName = null;
 let cpuPokemonName = null
 
+
 // Constants
 const pokeUrl = "https://pokeapi.co/api/v2/pokemon/";
 const pokemons = [
@@ -26,19 +27,16 @@ function populateSelectBox(options, selectElementId) {
     selectBox.appendChild(optionElement);
   });
   document.getElementById('start-battle').disabled = false;
-  selectBox.addEventListener('change', async(event) => {
-    selectedPokemonName = event.target.value;
-    if (selectedPokemonName) {
-      const pokemonData = await fetchPokemonData(selectedPokemonName);
-      displayPokemonInfo(pokemonData, 'player-info');
+  document.getElementById('select-pokemon').addEventListener('click', async () => {
+    selectedPokemonName = document.getElementById('player-pokemon').value;
+    const pokemonData = await fetchPokemonData(selectedPokemonName);
+    displayPokemonInfo(pokemonData, 'player-info');
 
-      cpuPokemonName = selectRandomPokemon();
-      const cpuPokemonData = await fetchPokemonData(cpuPokemonName);
-      displayPokemonInfo(cpuPokemonData, 'cpu-info');
-    };
+    cpuPokemonName = selectRandomPokemon();
+    const cpuPokemonData = await fetchPokemonData(cpuPokemonName);
+    displayPokemonInfo(cpuPokemonData, 'cpu-info');
   });
 };
-
 
 // Fetch Pokémon data from the API
 async function fetchPokemonData(name) {
@@ -128,6 +126,30 @@ async function startBattle() {
   battleLog.innerHTML += `<p><strong>${winner} wins the battle!</strong></p>`;
 }
 
+// function resetGame() {
+//   const battleLog = document.getElementById('battle-log');
+//   if (battleLog) {
+//     battleLog.innerHTML = '';
+//   }
+
+//   if (selectedPokemonName) {
+//     const pokeInfo = document.getElementById('poke-info')
+//     pokeInfo.innerHTML = "
+//     <h2>Player\'s Pokemon</h2>
+//     <div id=\'player-section\'>
+//       <h3>Select Your Pokemon</h3>
+//       <select id=\'player-pokemon\'>
+
+//       </select>
+//       <button id=\'select-pokemon\'>Choose Pokemon</button>
+//     </div>
+//   </div>
+//   <div id=\'cpu-info\'>
+//     <h2>CPU\'s Pokemon</h2>
+//     <img src=\'assets/question_mark.png\' alt=\'Pokemon with question mark\' width=\'484\' height=\'413\'>
+//   </div>"
+// }
+
 // Populate the select box when the window loads
 window.onload = () => {
   populateSelectBox(pokemons, 'player-pokemon');
@@ -135,3 +157,6 @@ window.onload = () => {
 
 // Event listener for starting the battle
 document.getElementById('start-battle').addEventListener('click', startBattle);
+
+// Event listener for resetting the game
+// document.getElementById('reset-game').addEventListener('click', resetGame);
