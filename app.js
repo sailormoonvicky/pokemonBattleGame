@@ -1,4 +1,5 @@
-
+let selectedPokemonName = null;
+let cpuPokemonName = null
 
 // Constants
 const pokeUrl = "https://pokeapi.co/api/v2/pokemon/";
@@ -14,6 +15,8 @@ const pokemons = [
 ];
 
 // Function to populate the select box with options
+document.getElementById('start-battle').disabled = true;
+
 function populateSelectBox(options, selectElementId) {
   const selectBox = document.getElementById(selectElementId);
   options.forEach(option => {
@@ -22,7 +25,20 @@ function populateSelectBox(options, selectElementId) {
     optionElement.textContent = option;
     selectBox.appendChild(optionElement);
   });
-}
+  document.getElementById('start-battle').disabled = false;
+  selectBox.addEventListener('change', async(event) => {
+    selectedPokemonName = event.target.value;
+    if (selectedPokemonName) {
+      const pokemonData = await fetchPokemonData(selectedPokemonName);
+      displayPokemonInfo(pokemonData, 'player-info');
+
+      cpuPokemonName = selectRandomPokemon();
+      const cpuPokemonData = await fetchPokemonData(cpuPokemonName);
+      displayPokemonInfo(cpuPokemonData, 'cpu-info');
+    };
+  });
+};
+
 
 // Fetch Pokémon data from the API
 async function fetchPokemonData(name) {
@@ -48,11 +64,11 @@ function displayPokemonInfo(pokemonData, elementId) {
     <h1>${headerText}</h1>
     <h3>${pokemonData.name.toUpperCase()}</h3>
     <img src="${pokemonData.sprites.other.home.front_default}" alt="${pokemonData.name}">
-    <p>Type: ${pokemonData.types[0].type.name}</p>
-    <p>HP: ${pokemonData.stats[0].base_stat}</p>
-    <p>Attack: ${pokemonData.stats[1].base_stat}</p>
-    <p>Defense: ${pokemonData.stats[2].base_stat}</p>
-    <p>Speed: ${pokemonData.stats[5].base_stat}</p>
+    <p class="display">Type: ${pokemonData.types[0].type.name}</p>
+    <p class="display">HP: ${pokemonData.stats[0].base_stat}</p>
+    <p class="display">Attack: ${pokemonData.stats[1].base_stat}</p>
+    <p class="display">Defense: ${pokemonData.stats[2].base_stat}</p>
+    <p class="display">Speed: ${pokemonData.stats[5].base_stat}</p>
     <span class="line"></span>
   `;
 }
@@ -63,50 +79,27 @@ function selectRandomPokemon() {
   return pokemons[randomIndex];
 }
 
-// Event listener for Pokémon selection
-document.getElementById('select-pokemon').addEventListener('click', async () => {
-  const playerPokemon = document.getElementById('player-pokemon').value;
-  const pokemonData = await fetchPokemonData(playerPokemon);
-  displayPokemonInfo(pokemonData, 'player-info');
-
-  const cpuPokemon = selectRandomPokemon();
-  const cpuPokemonData = await fetchPokemonData(cpuPokemon);
-  displayPokemonInfo(cpuPokemonData, 'cpu-info');
-});
-
-// Populate the select box when the window loads
-window.onload = () => {
-  populateSelectBox(pokemons, 'player-pokemon');
-};
-
 // Function calculate the damage
 function calculate_damage(attacker, defender) {
   const attack = attacker.stats[1].base_stat;
-  const a_speed = attacker["speed"];
-  const defense = defender["defense"];
-  const d_speed = defender["speed"];
-  //Apply a random damage modifier between 0.85 and 1.0
+  const a_speed = attacker.stats[5].base_stat;
+  const defense = defender.stats[2].base_stat;
+  const d_speed = defender.stats[5].base_stat;
   const modifier = Math.random() * (1 - 0.75) + 0.75;
   const damage = (attack*a_speed*0.02-defense*d_speed*0.01) * modifier
-  if (damege >=0) {
-    return Math.round(damage)
-  } else {
-    return 0
-  }
+  return damage>0? Math.round(damage) : 0;
 }
 
 // Function to start the battle
 async function startBattle() {
-  const playerPokemonName = document.getElementById('player-pokemon').value;
-  const playerPokemonData = await fetchPokemonData(playerPokemonName);
-  const cpuPokemonName = selectRandomPokemon();
+  const playerPokemonData = await fetchPokemonData(selectedPokemonName);
   const cpuPokemonData = await fetchPokemonData(cpuPokemonName);
 
   let playerHP = playerPokemonData.stats[0].base_stat;
   let cpuHP = cpuPokemonData.stats[0].base_stat;
 
   const battleLog = document.getElementById('battle-log');
-  battleLog.innerHTML = ''; // Clear previous logs
+  battleLog.innerHTML = '';
 
   let round = 1;
   let playerTurn = Math.random() < 0.5;
@@ -115,16 +108,16 @@ async function startBattle() {
       let playerDamage = 0, cpuDamage = 0;
 
       if (playerTurn) {
-          playerDamage = calculate_damage(playerPokemonData.stats, cpuPokemonData.stats);
+          playerDamage = calculate_damage(playerPokemonData, cpuPokemonData);
           cpuHP -= playerDamage;
-          battleLog.innerHTML += `<p>Round ${round}: Player attacks and inflicts ${playerDamage} damage.</p>`;
+          battleLog.innerHTML += `<p>Round ${round}: It's ${selectedPokemonName}'s turn to attack. <br>Player's ${selectedPokemonName} attacks and inflicts ${playerDamage} damage. CPU's ${cpuPokemonName} remains ${cpuHP} HP.</p>`;
       } else {
-          cpuDamage = calculate_damage(cpuPokemonData.stats, playerPokemonData.stats);
+          cpuDamage = calculate_damage(cpuPokemonData, playerPokemonData);
           playerHP -= cpuDamage;
-          battleLog.innerHTML += `<p>Round ${round}: CPU attacks and inflicts ${cpuDamage} damage.</p>`;
+          battleLog.innerHTML += `<p>Round ${round}: It's ${cpuPokemonName}'s turn to attack. <br>CPU's ${cpuPokemonName} attacks and inflicts ${cpuDamage} damage. Player's ${selectedPokemonName} remains ${playerHP} HP.</p>`;
       }
 
-      if (playerHP <= 0 || cpuHP <= 0) break; // Check if the battle ends
+      if (playerHP <= 0 || cpuHP <= 0) break;
 
       // Switch turns
       playerTurn = !playerTurn;
@@ -134,6 +127,11 @@ async function startBattle() {
   const winner = playerHP > cpuHP ? 'Player' : 'CPU';
   battleLog.innerHTML += `<p><strong>${winner} wins the battle!</strong></p>`;
 }
+
+// Populate the select box when the window loads
+window.onload = () => {
+  populateSelectBox(pokemons, 'player-pokemon');
+};
 
 // Event listener for starting the battle
 document.getElementById('start-battle').addEventListener('click', startBattle);

@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pokémon Battle Game</title>
   <link rel="stylesheet" href="assets/index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Kanit:wght@800&family=Sacramento&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="https://slackmojis.com/emojis/186-pokeball/download">
 </head>
 <body>
@@ -18,17 +21,16 @@
     <!-- Display Player's Pokemon -->
     <section id="poke-info">
       <div id="player-info">
-        <h2>Player's Pokemon</h3>
+        <h2>Player's Pokemon</h2>
         <div id="player-section">
-          <h3>Select Your Pokemon</h2>
+          <h3>Select Your Pokemon</h3>
           <select id="player-pokemon">
 
           </select>
-          <button id="select-pokemon">Choose Pokemon</button>
         </div>
       </div>
       <div id="cpu-info">
-        <h2>CPU's Pokemon</h3>
+        <h2>CPU's Pokemon</h2>
         <img src="assets/question_mark.png" alt="Pokemon with question mark" width="484" height="413">
       </div>
     </section>
@@ -41,6 +43,20 @@
       <button id="start-battle">Start Battle</button>
     </section>
 
+    <div class="instructions">
+      <div class="instruction">
+        <h3>Step 1</h3>
+        <p>Select a Pokemon you like with the select-box</p>
+      </div>
+      <div class="instruction">
+        <h3>Step 2</h3>
+        <p>Click "Start Battle" to have your Pokemon battle with CPU's Pokemon, which is selected randomly.<br>Who attacks first it's random. </p>
+      </div>
+      <div class="instruction">
+        <h3>Step 3</h3>
+        <p>You can check the battle logs and result, .</p>
+      </div>
+    </div>
 
   </main>
 
